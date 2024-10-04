@@ -1,4 +1,4 @@
-# Your Solution
+# Write Kubernetes Deployment Script
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,20 +8,21 @@ spec:
   selector:
     matchLabels:
       app: book-catalog
-  template: 
+  template:
     metadata:
       labels:
         app: book-catalog
     spec:
-      containers: 
+      containers:
       - name: book-catalog
-        image: week007.azurecr.io/book_catalog
+        image: week007.azurecr.io/book-catalog:latest
         imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
         env:
-        - name: PORT
-          value: "3000"
         - name: DATABASE_URL
           value: "postgresql://sit722_week7_user:9mZprc6fr3RMArAwmxh6TyHbTi18AXA3@dpg-crv4br08fa8c73cqtldg-a.oregon-postgres.render.com/sit722_week7"
+
 ---
 apiVersion: v1
 kind: Service
@@ -34,11 +35,10 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 80
+
 
 ---
-
-# Write Kubernetes Deployment Script
 
 apiVersion: apps/v1
 kind: Deployment
@@ -56,13 +56,14 @@ spec:
     spec:
       containers: 
       - name: inventory-management
-        image: week007.azurecr.io/inventory_management
+        image: week007.azurecr.io/inventory-management:latest
         imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
         env:
-        - name: PORT
-          value: "5000"
         - name: DATABASE_URL
           value: "postgresql://sit722_week7_user:9mZprc6fr3RMArAwmxh6TyHbTi18AXA3@dpg-crv4br08fa8c73cqtldg-a.oregon-postgres.render.com/sit722_week7"
+
 ---
 apiVersion: v1
 kind: Service
@@ -75,4 +76,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 5000
+      targetPort: 80
